@@ -8,8 +8,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 
+import ru.mstoyan.shiko.testtask.Utils.Parser.TermCubicBezier;
+import ru.mstoyan.shiko.testtask.Utils.Parser.TermEnd;
+import ru.mstoyan.shiko.testtask.Utils.Parser.TermHorizontal;
+import ru.mstoyan.shiko.testtask.Utils.Parser.TermLine;
+import ru.mstoyan.shiko.testtask.Utils.Parser.TermMove;
+import ru.mstoyan.shiko.testtask.Utils.Parser.TermQuadBezier;
+import ru.mstoyan.shiko.testtask.Utils.Parser.TermShortCubicBezier;
+import ru.mstoyan.shiko.testtask.Utils.Parser.TermVertical;
+import ru.mstoyan.shiko.testtask.Utils.Parser.TerminalWord;
+import ru.mstoyan.shiko.testtask.Utils.SVGReader;
+
 /**
- * Created by shiko on 09.02.2017.
+ * Created by shiko on 10.02.2017.
  */
 
 public class PathReader implements SVGReader {
@@ -33,189 +44,51 @@ public class PathReader implements SVGReader {
         String data = getFileContent();
         final int length = data.length();
         String currentChar;
-        String prevChar = "";
-
-        float x1 = 0,x2 = 0,x3 = 0,y1 = 0,y2 = 0,y3 = 0;
-        boolean a, b;
-        int next;
+        TerminalWord prevWord = null;
+        TerminalWord currentWord = null;
 
         for (int i = 0; i < length; i++){
             currentChar = data.substring(i,i+1).toUpperCase();
             i++;
             switch (currentChar){
                 case "M":
-                    next = readFloat(data,i);
-                    x1 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    y1 = Float.parseFloat(data.substring(i,next));
-                    result.moveTo(x1,y1);
-                    i = next-1;
+                    currentWord = new TermMove();
                     break;
                 case "L":
-                    next = readFloat(data,i);
-                    x1 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    y1 = Float.parseFloat(data.substring(i,next));
-                    result.lineTo(x1,y1);
-                    i = next-1;
+                    currentWord = new TermLine();
                     break;
                 case "H":
-                    next = readFloat(data,i);
-                    x1 = Float.parseFloat(data.substring(i,next));
-                    result.lineTo(x1,y1);
-                    i = next-1;
+                    currentWord = new TermHorizontal();
                     break;
                 case "V":
-                    next = readFloat(data,i);
-                    y1 = Float.parseFloat(data.substring(i,next));
-                    result.lineTo(x1,y1);
-                    i = next-1;
+                    currentWord = new TermVertical();
                     break;
                 case "C":
-                    next = readFloat(data,i);
-                    x2 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    y2 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    x3 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    y3 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    x1 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    y1 = Float.parseFloat(data.substring(i,next));
-                    result.cubicTo(x2,y2,x3,y3,x1,y1);
-                    i = next-1;
+                    currentWord = new TermCubicBezier();
                     break;
                 case "S":
-                    if (prevChar.equals("C") || prevChar.equals("S")){
-                        x2 = x1 + x1 - x3;
-                        y2 = y1 + y1 - y3;
-                    }
-
-                    next = readFloat(data,i);
-                    x3 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    y3 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    if (!prevChar.equals("C") && !prevChar.equals("S")){
-                        x2 = x1 + x1 - x3;
-                        y2 = y1 + y1 - y3;
-                    }
-
-                    next = readFloat(data,i);
-                    x1 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    y1 = Float.parseFloat(data.substring(i,next));
-                    result.cubicTo(x2,y2,x3,y3,x1,y1);
-                    i = next-1;
+                    currentWord = new TermShortCubicBezier();
                     break;
                 case "Q":
-                    next = readFloat(data,i);
-                    x2 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    y2 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    x1 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    y1 = Float.parseFloat(data.substring(i,next));
-                    result.quadTo(x2,y2,x1,y2);
-                    i = next-1;
+                    currentWord = new TermQuadBezier();
                     break;
                 case "T":
-                    x2 = x1 + x1 - x2;
-                    y2 = y1 + y1 - y2;
-
-                    next = readFloat(data,i);
-                    x1 = Float.parseFloat(data.substring(i,next));
-                    checkDelimiter(data,next);
-                    i = next + 1;
-
-
-                    next = readFloat(data,i);
-                    y1 = Float.parseFloat(data.substring(i,next));
-                    result.quadTo(x2,y2,x1,y2);
-                    i = next-1;
                     break;
                 case "A":
                     break;
                 case "Z":
+                    currentWord = new TermEnd();
                     break;
                 default:
                     throw new ParseException("Wrong char!",i);
             }
-            prevChar = currentChar;
+
+            i = currentWord.readFromString(data,i);
+            currentWord.projectToPath(prevWord,result);
+            prevWord = currentWord;
         }
 
         return result;
-    }
-
-    private int readFloat(String str, int beginPos){
-        final int len = str.length();
-        while (beginPos < len && numberChars.contains(str.substring(beginPos,beginPos+1))) {
-            String currChar = str.substring(beginPos,beginPos+1);
-            beginPos++;
-        }
-        return beginPos;
-    }
-
-    private boolean checkDelimiter(String str, int pos){
-        return true;
-    }
-
-    private boolean checkBoolean(String str, int pos){
-        return true;
     }
 
     private String getFileContent() throws IOException {

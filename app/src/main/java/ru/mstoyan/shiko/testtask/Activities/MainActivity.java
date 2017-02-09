@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         if (filePath==null)
             return; //// TODO: 09.02.2017 error
         SVGReader reader = new PathReader(filePath);
-        Path path = new Path();
+        Path path;
         try {
             path = reader.getPath();
             PathDrawer pathDrawer = (PathDrawer)findViewById(R.id.imageDrawer);
