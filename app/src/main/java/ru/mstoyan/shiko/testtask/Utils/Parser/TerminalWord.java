@@ -24,10 +24,6 @@ public abstract class TerminalWord {
         return offset;
     }
 
-    protected int readBoolean(String data, int offset){
-        return 0;
-    }
-
     protected boolean checkDelimiter(String data, int offset){
         return true;
     }

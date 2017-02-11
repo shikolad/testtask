@@ -21,6 +21,6 @@ public class TermVertical extends TerminalWord {
     @Override
     public void projectToPath(TerminalWord prev, Path path) {
         point = new PointF(prev.getPoint().x,y);
-        path.moveTo(point.x,point.y);
+        path.lineTo(point.x,point.y);
     }
 }

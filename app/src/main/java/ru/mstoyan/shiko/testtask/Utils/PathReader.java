@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 
+import ru.mstoyan.shiko.testtask.Utils.Parser.TermArc;
 import ru.mstoyan.shiko.testtask.Utils.Parser.TermCubicBezier;
 import ru.mstoyan.shiko.testtask.Utils.Parser.TermEnd;
 import ru.mstoyan.shiko.testtask.Utils.Parser.TermHorizontal;
@@ -17,7 +18,6 @@ import ru.mstoyan.shiko.testtask.Utils.Parser.TermQuadBezier;
 import ru.mstoyan.shiko.testtask.Utils.Parser.TermShortCubicBezier;
 import ru.mstoyan.shiko.testtask.Utils.Parser.TermVertical;
 import ru.mstoyan.shiko.testtask.Utils.Parser.TerminalWord;
-import ru.mstoyan.shiko.testtask.Utils.SVGReader;
 
 /**
  * Created by shiko on 10.02.2017.
@@ -26,10 +26,6 @@ import ru.mstoyan.shiko.testtask.Utils.SVGReader;
 public class PathReader implements SVGReader {
 
     private String filePath = null;
-    private static final String namespace = null;
-    private static final String commandsLarge = "MLHVCSQTAZ";
-    private static final String delimiter = ",";
-    private static final String numberChars = "0123456789.-+";
 
     private PathReader(){}
 
@@ -75,6 +71,7 @@ public class PathReader implements SVGReader {
                 case "T":
                     break;
                 case "A":
+                    currentWord = new TermArc();
                     break;
                 case "Z":
                     currentWord = new TermEnd();
