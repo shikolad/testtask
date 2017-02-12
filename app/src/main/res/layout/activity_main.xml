@@ -17,7 +17,7 @@
         android:layout_above="@+id/loadImage"/>
 
     <Button
-        android:text="Button"
+        android:text="Open File"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

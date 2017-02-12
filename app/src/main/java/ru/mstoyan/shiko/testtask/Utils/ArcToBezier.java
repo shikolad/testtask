@@ -158,7 +158,7 @@ public  class ArcToBezier {
         // Split an arc to multiple segments, so each segment
         // will be less than τ/4 (= 90°)
         //
-        double segments = Math.max(Math.ceil(Math.abs(delta_theta) / (TAU / 4)), 1);
+        double segments = Math.max(Math.ceil(Math.abs(delta_theta) / (TAU / 4)), 1) * 3;
         delta_theta /= segments;
 
         for (int i = 0; i < segments; i++) {

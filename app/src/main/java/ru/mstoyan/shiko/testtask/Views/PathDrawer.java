@@ -5,6 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Region;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
@@ -22,6 +25,7 @@ public class PathDrawer extends View implements GestureDetector.OnGestureListene
     private Path path;
     private Paint paint;
     private GestureDetector gestureDetector;
+    private Region region;
     Random rnd = new Random();
 
     public PathDrawer(Context context) {
@@ -53,6 +57,8 @@ public class PathDrawer extends View implements GestureDetector.OnGestureListene
         paint.setColor(Color.rgb(0,0,0));
         paint.setStyle(Paint.Style.FILL);
 
+        region = new Region();
+
         gestureDetector = new GestureDetector(getContext(), this);
     }
 
@@ -64,6 +70,7 @@ public class PathDrawer extends View implements GestureDetector.OnGestureListene
 
     public void setPath(Path newPath){
         path = newPath;
+        region.setPath(newPath, new Region(0,0,getHeight(),getWidth()));
         invalidate();
     }
 
@@ -80,7 +87,8 @@ public class PathDrawer extends View implements GestureDetector.OnGestureListene
 
     @Override
     public boolean onDown(MotionEvent e) {
-        paint.setColor(Color.rgb(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
+        if (region.contains((int)e.getX(),(int)e.getY()))
+            paint.setColor(Color.rgb(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
         invalidate();
         return false;
     }
