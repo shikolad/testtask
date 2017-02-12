@@ -119,6 +119,7 @@ public  class ArcToBezier {
         double sin_phi = Math.sin(phi * TAU / 360);
         double cos_phi = Math.cos(phi * TAU / 360);
 
+        ArrayList<BezierInfo> result = new ArrayList<>(4);
         // Make sure radii are valid
         //
         double x1p =  cos_phi*(x1-x2)/2 + sin_phi*(y1-y2)/2;
@@ -126,12 +127,12 @@ public  class ArcToBezier {
 
         if (x1p == 0 && y1p == 0) {
             // we're asked to draw line to itself
-            return null;
+            return result;
         }
 
         if (rx == 0 || ry == 0) {
             // one of the radii is zero
-            return null;
+            return result;
         }
 
 
@@ -151,7 +152,6 @@ public  class ArcToBezier {
         //
         ArcInfo cc = get_arc_center(x1, y1, x2, y2, fa, fs, rx, ry, sin_phi, cos_phi);
 
-        ArrayList<BezierInfo> result = new ArrayList<>(4);
         double theta1 = cc.theta1;
         double delta_theta = cc.delta_theta;
 

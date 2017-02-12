@@ -38,6 +38,9 @@ public class PathReader implements SVGReader {
         Path result = new Path();
 
         String data = getFileContent();
+        if (!data.substring(0,1).toUpperCase().equals("M")){
+            throw new ParseException("Wrong file beginning",0);
+        }
         final int length = data.length();
         String currentChar;
         TerminalWord prevWord = null;
@@ -83,6 +86,9 @@ public class PathReader implements SVGReader {
             i = currentWord.readFromString(data,i);
             currentWord.projectToPath(prevWord,result);
             prevWord = currentWord;
+        }
+        if (!(prevWord instanceof TermEnd)){
+            throw new ParseException("Unexpected end of data!!",length);
         }
 
         return result;

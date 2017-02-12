@@ -2,7 +2,6 @@ package ru.mstoyan.shiko.testtask.Utils.Parser;
 
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.graphics.RectF;
 
 import java.util.ArrayList;
 import java.util.IllegalFormatException;
@@ -14,8 +13,8 @@ import ru.mstoyan.shiko.testtask.Utils.ArcToBezier;
  */
 
 public class TermArc extends TerminalWord {
-    float rx, ry, rotation;
-    float largeFlag, sweepFlag;
+    private float rx, ry, rotation;
+    private float largeFlag, sweepFlag;
     @Override
     public int readFromString(String data, int offset) throws IllegalFormatException {
         int next = readFloat(data,offset);
@@ -35,13 +34,11 @@ public class TermArc extends TerminalWord {
         offset = next + 1;
 
         next = readFloat(data,offset);
-//        largeFlag = Float.parseFloat(data.substring(offset,next)) != 0;
         largeFlag = Float.parseFloat(data.substring(offset,next));
         checkDelimiter(data,next);
         offset = next + 1;
 
         next = readFloat(data,offset);
-//        sweepFlag = Float.parseFloat(data.substring(offset,next)) != 0;
         sweepFlag = Float.parseFloat(data.substring(offset,next));
         checkDelimiter(data,next);
         offset = next + 1;

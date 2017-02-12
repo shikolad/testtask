@@ -10,7 +10,8 @@ import java.util.IllegalFormatException;
  */
 
 public abstract class TerminalWord {
-    public static final String numberChars = "0123456789.-+";
+    private static final String numberChars = "0123456789.-+";
+    private static final String delimiter = ",";
     protected PointF point;
 
     abstract public int readFromString(String data, int offset) throws IllegalFormatException;
@@ -24,8 +25,8 @@ public abstract class TerminalWord {
         return offset;
     }
 
-    protected boolean checkDelimiter(String data, int offset){
-        return true;
+    boolean checkDelimiter(String data, int offset){
+        return data.substring(offset,offset+1).equals(delimiter);
     }
 
     public PointF getPoint(){

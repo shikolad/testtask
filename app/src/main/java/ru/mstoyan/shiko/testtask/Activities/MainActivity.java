@@ -2,7 +2,6 @@ package ru.mstoyan.shiko.testtask.Activities;
 
 import android.content.Intent;
 import android.graphics.Path;
-import android.graphics.drawable.VectorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -44,8 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void fileReceived(Intent data){
         String filePath = data.getStringExtra(SelectFileActivity.FILE_PATH);
-        if (filePath==null)
-            return; //// TODO: 09.02.2017 error
+        if (filePath==null) {
+            Toast.makeText(this, R.string.null_file_name_error, Toast.LENGTH_LONG).show();
+            return;
+        }
         SVGReader reader = new PathReader(filePath);
         Path path;
         try {
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             PathDrawer pathDrawer = (PathDrawer)findViewById(R.id.imageDrawer);
             pathDrawer.setPath(path);
         } catch (IOException e) {
-            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(this,R.string.io_file_error,Toast.LENGTH_LONG).show();
         } catch (ParseException e) {
             Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
         }

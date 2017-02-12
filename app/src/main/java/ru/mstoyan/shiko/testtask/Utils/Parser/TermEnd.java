@@ -11,11 +11,11 @@ import java.util.IllegalFormatException;
 public class TermEnd extends TerminalWord {
     @Override
     public int readFromString(String data, int offset) throws IllegalFormatException {
-        return offset + 1;//// TODO: 10.02.2017 check if right
+        return offset + 1;
     }
 
     @Override
     public void projectToPath(TerminalWord prev, Path path) {
-
+        path.close();
     }
 }
