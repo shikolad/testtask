@@ -82,8 +82,13 @@ public class PathReader implements SVGReader {
                 default:
                     throw new ParseException("Wrong char!",i);
             }
-
-            i = currentWord.readFromString(data,i);
+            try {
+                i = currentWord.readFromString(data, i);
+            } catch (NumberFormatException e){
+                throw new ParseException("Unexpected float value!",i);
+            } catch (IndexOutOfBoundsException e){
+                throw new ParseException("Data not completed!", i);
+            }
             currentWord.projectToPath(prevWord,result);
             prevWord = currentWord;
         }
